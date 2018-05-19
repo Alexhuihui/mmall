@@ -213,11 +213,10 @@ public class UserServiceImpl implements IUserService {
      * @param user 传入一个user对象
      * @return
      */
-    public ServerResponse checkAdmin(User user){
+    public ServerResponse checkAdminRole(User user){
         if(user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN){
-
+            return ServerResponse.createBySuccess();
         }
-
-        return null;
+        return ServerResponse.createByError();
     }
 }
