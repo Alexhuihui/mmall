@@ -7,6 +7,7 @@ import com.mmall.dao.ProductMapper;
 import com.mmall.pojo.Category;
 import com.mmall.pojo.Product;
 import com.mmall.service.IProductService;
+import com.mmall.util.DateTimeUtil;
 import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.ProductDetailVo;
 import org.apache.commons.lang3.StringUtils;
@@ -68,7 +69,8 @@ public class ProductServiceImpl implements IProductService {
         return ServerResponse.createByErrorMessage("修改产品销售状态失败");
     }
 
-    public ServerResponse<Object> manageProductDetail(Integer productId) {
+    @Override
+    public ServerResponse<ProductDetailVo> manageProductDetail(Integer productId) {
         if (productId == null) {
             return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -77,7 +79,7 @@ public class ProductServiceImpl implements IProductService {
             return ServerResponse.createByErrorMessage("产品已删除或者已下架");
         }
         ProductDetailVo productDetailVo = assembleProductDetailVo(product);
-        return null;
+        return ServerResponse.createBySuccess(productDetailVo);
     }
 
     private ProductDetailVo assembleProductDetailVo(Product product) {
@@ -96,14 +98,15 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
 
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
-        if(category == null){
+        if (category == null) {
             //默认根结点
             productDetailVo.setParentCategoryId(0);
-        }else{
+        } else {
             productDetailVo.setParentCategoryId(category.getParentId());
         }
 
-
+        productDetailVo.setCreateTime(DateTimeUtil.dateToStr(product.getCreateTime()));
+        productDetailVo.setUpdateTime(DateTimeUtil.dateToStr(product.getUpdateTime()));
         return productDetailVo;
     }
 }
