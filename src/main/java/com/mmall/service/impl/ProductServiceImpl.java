@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.github.pagehelper.PageHelper.*;
+
 /**
  * @author 汪永晖
  */
@@ -118,7 +120,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        startPage(pageNum, pageSize);
         List<Product> productList = productMapper.selectList();
 
         List<ProductListVo> productListVoList = Lists.newArrayList();
