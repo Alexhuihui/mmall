@@ -15,8 +15,13 @@ public class Const {
 
     public static final String USERNAME = "username";
 
-    public interface ProductListOrderBy{
+    public interface ProductListOrderBy {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc", "price_asc");
+    }
+
+    public interface Cart {
+        int CHECKED = 1;
+        int UN_CHECKED = 0;
     }
 
     public interface Role {
